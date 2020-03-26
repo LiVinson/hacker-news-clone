@@ -1,56 +1,44 @@
-//Request top stories from Hackerrank
+//Called when Top component mounts. Retreives story Ids in array.
+export async function getTopStories() {
+  //returns promise with array of up to 500 stores
+  const topStoryIds = await getTopStoryIds()
+  if (topStoryIds.length > 0) {
+    console.log(topStoryIds[0])
+    //Returns an array of story objects wrapped in promise
+    const topStories = await getStories(topStoryIds)
+    return topStories
+  }
+}
 
-export async function getTopStoryIds() {
-  //console.log("request top stories")
+//returns array of story ids
+function getTopStoryIds() {
+  return fetch(
+    "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
+  )
+    .then(response => response.json())
+    .catch(error => console.log(error)) //Add error function
+}
 
-  fetch("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
-    .then(storyIdResponse => storyIdResponse.json())
-    .then(storyIdResponseJson => {
-      //if (storyIdResponseJson.length === 0 || storyIdResponstoryIdResponseJsonseJson == null) {
-      //console.warn("there was a problem retreiving stories.")
-      //return []
-      //}
-      Promise.all(
-        storyIdResponseJson.map(storyId =>
-          fetch(
-            `https://hacker-news.firebaseio.com/v0/item/${storyId}.json?print=pretty`
-          ).then(storyResponse => storyResponse.json())
-        )
-      ).then(stories => {
-        console.log(stories[0])
-        return stories
-      })
+//Input: Array of story Ids from previous request to API
+//Output: Array of story objects based on provided Ids
+async function getStories(storyIds) {
+  return await Promise.all(storyIds.map(requestStory))
+    .then(stories => {
+      console.log("promise all", stories[0])
+      return stories
     })
-    .catch(err => {
-      console.log("there was an error")
-      console.log(err)
+    .catch(error => {
+      console.log(error) //Figure out error handling
     })
 }
 
-// async function getTopStories(stories) {
-//   const promises = stories.map(async story => {
-//     fetch(
-//       `https://hacker-news.firebaseio.com/v0/item/${story}.json?print=pretty`
-//     ).then(response => {
-//       response.json().then(storyObj => {
-//         // console.log(storyObj)
-//         return storyObj
-//       })
-//     })
-//   })
-
-//   Promise.all(promises).then(value => {
-//     console.log("value")
-//     console.log(value[0])
-//   })
-// }
-
-// export function requestTopStories() {
-//   getTopStoryIds()
-//   //   storyIdsArr.then(values => {
-//   //     console.log(value)
-//   //   })
-//   //   Promise.all([getTopStoryIds]).then(values => {
-//   //     console.log(values[0])
-//   //   })
-// }
+//Input: StoryId
+//Output: story object for provided Story Id.
+function requestStory(storyId) {
+  console.log("requestStories")
+  return fetch(
+    `https://hacker-news.firebaseio.com/v0/item/${storyId}.json?print=pretty`
+  )
+    .then(story => story.json())
+    .catch(error => console.log(error)) //Figure out error approach
+}
