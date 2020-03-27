@@ -1,11 +1,17 @@
 import React from "react"
 import ReactDom from "react-dom"
 import "./index.css"
-import Top from "./components/Top"
+import News from "./components/News"
+import Navbar from "./components/NavBar"
 
 class App extends React.Component {
   render() {
-    return <Top />
+    return (
+      <div>
+        <Navbar />
+        <News storyType="new" />
+      </div>
+    )
   }
 }
 

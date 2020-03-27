@@ -1,16 +1,26 @@
 //Called when Top component mounts. Retreives story Ids in array.
-export async function getTopStories() {
+export async function getStories(storyType) {
+  console.log(storyType)
   //returns promise with array of up to 500 stores
-  const topStoryIds = await getTopStoryIds()
-  if (topStoryIds.length > 0) {
-    console.log(topStoryIds[0])
-    //Returns an array of story objects wrapped in promise
-    const topStories = await getStories(topStoryIds)
-    return topStories
+  let storyIds
+  if (storyType === "top") {
+    storyIds = await getTopStoryIds()
+  } else {
+    storyIds = await getNewStoryIds()
   }
+
+  if (storyIds.length > 0) {
+    const max100StoryIds =
+      storyIds.length > 100 ? storyIds.slice(0, 100) : storyIds
+
+    //Returns an array of story objects wrapped in promise
+    const storiesAndJobs = await getStoriesArray(max100StoryIds)
+    const stories = storiesAndJobs.filter(story => story.type === "story")
+    return stories
+  } //deal with error/empty array
 }
 
-//returns array of story ids
+//returns array of top story ids
 function getTopStoryIds() {
   return fetch(
     "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
@@ -19,9 +29,23 @@ function getTopStoryIds() {
     .catch(error => console.log(error)) //Add error function
 }
 
+//returns array of new story ids
+function getNewStoryIds() {
+  return fetch(
+    "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
+  )
+    .then(response => response.json())
+    .catch(error => console.log(error)) //Add error function
+}
+
+function filterAndLimitStoryIds(storyIdArr) {
+  const sortedStories = storyIdAdd.sort((a, b) => {
+    return
+  })
+}
 //Input: Array of story Ids from previous request to API
 //Output: Array of story objects based on provided Ids
-async function getStories(storyIds) {
+async function getStoriesArray(storyIds) {
   return await Promise.all(storyIds.map(requestStory))
     .then(stories => {
       console.log("promise all", stories[0])
