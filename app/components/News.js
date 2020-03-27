@@ -33,7 +33,7 @@ export default class News extends React.Component {
 
   displayStories(story) {
     return (
-      <li key={story.id}>
+      <li key={story.id} className="list-item">
         <Card
           postId={story.id}
           title={story.title}

@@ -11,7 +11,7 @@ export function Card({
 }) {
   return (
     <div>
-      <h3>
+      <h3 className="article-header">
         <a href={articleUrl && ""} target="_blank">
           {title}
         </a>

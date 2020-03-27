@@ -3,20 +3,21 @@ import ReactDom from "react-dom"
 import "./index.css"
 import News from "./components/News"
 import Navbar from "./components/NavBar"
+import { Container } from "./components/Container"
 
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <Container>
         <Navbar />
         <News storyType="top" />
-      </div>
+      </Container>
     )
   }
 }
 
 //Next Steps:
-//Loading Method working with message passed in
+
 //Style the News component
 //User component
 //API: get posts by the user that was selected. Reuse Card component

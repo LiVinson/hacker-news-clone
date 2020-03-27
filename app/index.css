@@ -1,13 +1,54 @@
 /* General Component Styling */
-
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 /* Container element - centers everything. Adds margins to the sides and top */
+.container {
+  margin: 15px 0 40px 40px;
+}
 
+.list-item {
+  list-style-type: none;
+  padding-bottom: 10px;
+  padding-left: none;
+}
+
+ul {
+  padding: 0px;
+}
 /*
 news list items: Add spacing between each
 */
+.article-header {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
 
-/*
-fonts: 
-    titles: bold, red
-    by line: gray
-*/
+.article-header a {
+  text-decoration: none;
+  color: rgb(204, 20, 20);
+}
+
+.list-item p {
+  margin-bottom: 0px;
+  margin-top: 5px;
+  font-size: 18px;
+  color: rgb(133, 129, 129);
+}
+
+.list-item p a {
+  color: rgb(0, 0, 0);
+}
+
+.navbar {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  margin-right: 10px;
+  font-size: 18px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
