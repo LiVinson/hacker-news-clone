@@ -1,4 +1,4 @@
-//Called when Top component mounts. Retreives story Ids in array.
+//Called when News component mounts. Retreives story Ids in array.
 export async function getStories(storyType) {
   console.log(storyType)
   //returns promise with array of up to 500 stores
@@ -38,11 +38,6 @@ function getNewStoryIds() {
     .catch(error => console.log(error)) //Add error function
 }
 
-function filterAndLimitStoryIds(storyIdArr) {
-  const sortedStories = storyIdAdd.sort((a, b) => {
-    return
-  })
-}
 //Input: Array of story Ids from previous request to API
 //Output: Array of story objects based on provided Ids
 async function getStoriesArray(storyIds) {
@@ -58,11 +53,75 @@ async function getStoriesArray(storyIds) {
 
 //Input: StoryId
 //Output: story object for provided Story Id.
-function requestStory(storyId) {
+export function requestStory(storyId) {
   console.log("requestStories")
   return fetch(
     `https://hacker-news.firebaseio.com/v0/item/${storyId}.json?print=pretty`
   )
     .then(story => story.json())
     .catch(error => console.log(error)) //Figure out error approach
+}
+
+//======= Users =========//
+
+//Retreive user object based on userId.
+
+export async function getUserPosts(userId) {
+  const user = {
+    userData: null,
+    userPosts: []
+  }
+  const userData = await getUserSubmissionIds(userId)
+
+  if (userData !== null) {
+    user.userData = userData
+    const userSubmissionIds = userData.submitted
+    if (userSubmissionIds.length > 0) {
+      const userSubmissionIdsMax100 =
+        userSubmissionIds.length > 100
+          ? userSubmissionIds.slice(0, 150)
+          : userSubmissionIds
+      const userPosts = await getStoriesArray(userSubmissionIdsMax100)
+      console.log("userPosts array")
+      console.log(userPosts)
+      const userStoryPosts = userPosts.filter(post => {
+        if (post !== null && post.type === "story") {
+          return post
+        }
+      })
+      user.userPosts = userStoryPosts
+      return user
+    }
+  }
+}
+
+//Input storyId
+//Returns story Object
+function getUserSubmissionIds(userId) {
+  return fetch(
+    `https://hacker-news.firebaseio.com/v0/user/${userId}.json?print=pretty`
+  ).then(response => response.json())
+  // .then(userData => userData.submitted)
+}
+
+//======== Comments ==============//
+
+export async function getComments(commentIds) {
+  console.log(commentIds)
+  return await Promise.all(
+    commentIds.map(comment => {
+      return fetch(
+        `https://hacker-news.firebaseio.com/v0/item/${comment}.json?print=pretty`
+      )
+        .then(response => response.json())
+        .then(jsonResponse => {
+          console.log(jsonResponse)
+          return jsonResponse
+        })
+    })
+  ).then(value => {
+    console.log("completed fetch comments")
+    console.log(value[0])
+    return value
+  })
 }

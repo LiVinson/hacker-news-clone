@@ -3,6 +3,8 @@ import ReactDom from "react-dom"
 import "./index.css"
 import News from "./components/News"
 import Navbar from "./components/NavBar"
+import User from "./components/User"
+import Comment from "./components/Comment"
 import { Container } from "./components/Container"
 
 class App extends React.Component {
@@ -10,7 +12,9 @@ class App extends React.Component {
     return (
       <Container>
         <Navbar />
-        <News storyType="top" />
+        {/* <News storyType="top" />*/}
+        {/* <User />*/}
+        <Comment />
       </Container>
     )
   }
@@ -22,6 +26,7 @@ class App extends React.Component {
 //User component
 //API: get posts by the user that was selected. Reuse Card component
 //Get it working with loading
+
 //Style User component
 //Comment Components -
 //API: get comments based on postId.
