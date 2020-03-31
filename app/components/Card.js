@@ -7,11 +7,12 @@ export function Card({
   articleUrl,
   author,
   postDate,
-  commentCount
+  commentCount,
+  page
 }) {
   return (
     <div>
-      <h3 className="article-header">
+      <h3 className={page === "news" ? "article-header" : ""}>
         <a href={articleUrl && ""} target="_blank">
           {title}
         </a>
@@ -25,16 +26,16 @@ export function Card({
   )
 }
 
-Card.propTypes = {
-  postId: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  articleUrl: PropTypes.string,
-  author: PropTypes.string.isRequired,
-  postDate: PropTypes.number.isRequired,
-  commentCount: PropTypes.number.isRequired
-}
+// Card.propTypes = {
+//   postId: PropTypes.number.isRequired,
+//   title: PropTypes.string.isRequired,
+//   articleUrl: PropTypes.string,
+//   author: PropTypes.string.isRequired,
+//   postDate: PropTypes.number.isRequired,
+//   commentCount: PropTypes.number.isRequired
+// }
 
-function formatDateTime(unixDate) {
+export function formatDateTime(unixDate) {
   const date = new Date(unixDate * 1000)
   const year = date.getFullYear()
   let month = 1 + date.getMonth()

@@ -1,7 +1,6 @@
-//Called when News component mounts. Retreives story Ids in array.
+//Called when News component mounts. Returns story Ids in array.
 export async function getStories(storyType) {
-  console.log(storyType)
-  //returns promise with array of up to 500 stores
+  //returns promise with array of up to 500 stories
   let storyIds
   if (storyType === "top") {
     storyIds = await getTopStoryIds()
@@ -13,7 +12,7 @@ export async function getStories(storyType) {
     const max100StoryIds =
       storyIds.length > 100 ? storyIds.slice(0, 100) : storyIds
 
-    //Returns an array of story objects wrapped in promise
+    //Returns an array of story and job objects wrapped in promise
     const storiesAndJobs = await getStoriesArray(max100StoryIds)
     const stories = storiesAndJobs.filter(story => story.type === "story")
     return stories
@@ -42,10 +41,7 @@ function getNewStoryIds() {
 //Output: Array of story objects based on provided Ids
 async function getStoriesArray(storyIds) {
   return await Promise.all(storyIds.map(requestStory))
-    .then(stories => {
-      console.log("promise all", stories[0])
-      return stories
-    })
+    .then(stories => stories)
     .catch(error => {
       console.log(error) //Figure out error handling
     })
@@ -53,8 +49,7 @@ async function getStoriesArray(storyIds) {
 
 //Input: StoryId
 //Output: story object for provided Story Id.
-export function requestStory(storyId) {
-  console.log("requestStories")
+function requestStory(storyId) {
   return fetch(
     `https://hacker-news.firebaseio.com/v0/item/${storyId}.json?print=pretty`
   )
@@ -64,26 +59,26 @@ export function requestStory(storyId) {
 
 //======= Users =========//
 
-//Retreive user object based on userId.
-
+//Retreive user object with userData and array of users's posted story objets
 export async function getUserPosts(userId) {
   const user = {
     userData: null,
     userPosts: []
   }
-  const userData = await getUserSubmissionIds(userId)
+  //Returns user object from provided if
+  const userData = await getUserData(userId)
 
   if (userData !== null) {
     user.userData = userData
     const userSubmissionIds = userData.submitted
     if (userSubmissionIds.length > 0) {
-      const userSubmissionIdsMax100 =
+      const userSubmissionIdsMax150 =
         userSubmissionIds.length > 100
           ? userSubmissionIds.slice(0, 150)
           : userSubmissionIds
-      const userPosts = await getStoriesArray(userSubmissionIdsMax100)
-      console.log("userPosts array")
-      console.log(userPosts)
+
+      //Returns array of user story and job  objects
+      const userPosts = await getStoriesArray(userSubmissionIdsMax150)
       const userStoryPosts = userPosts.filter(post => {
         if (post !== null && post.type === "story") {
           return post
@@ -97,31 +92,41 @@ export async function getUserPosts(userId) {
 
 //Input storyId
 //Returns story Object
-function getUserSubmissionIds(userId) {
+function getUserData(userId) {
   return fetch(
     `https://hacker-news.firebaseio.com/v0/user/${userId}.json?print=pretty`
   ).then(response => response.json())
-  // .then(userData => userData.submitted)
 }
 
 //======== Comments ==============//
 
-export async function getComments(commentIds) {
-  console.log(commentIds)
+//Input: story Id
+//Output: Object with story information and array of comment objects
+export async function getStoryComments(storyId) {
+  const storyData = {
+    story: null,
+    comments: []
+  }
+  //function to get array of Commend Ids
+  const story = await requestStory(storyId)
+  storyData.story = story
+  const commentIds = story.kids
+
+  if (commentIds.length > 0) {
+    const commentDetails = await getCommentDetails(commentIds)
+    console.log("comment details")
+    console.log(commentDetails)
+    storyData.comments = commentDetails
+  }
+  return storyData
+}
+
+export async function getCommentDetails(commentIds) {
   return await Promise.all(
     commentIds.map(comment => {
       return fetch(
         `https://hacker-news.firebaseio.com/v0/item/${comment}.json?print=pretty`
-      )
-        .then(response => response.json())
-        .then(jsonResponse => {
-          console.log(jsonResponse)
-          return jsonResponse
-        })
+      ).then(response => response.json())
     })
-  ).then(value => {
-    console.log("completed fetch comments")
-    console.log(value[0])
-    return value
-  })
+  ).then(commentArr => commentArr)
 }
