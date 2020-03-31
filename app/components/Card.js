@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { Link } from "react-router-dom"
 
 export function Card({
   postId,
@@ -13,27 +14,28 @@ export function Card({
   return (
     <div>
       <h3 className={page === "news" ? "article-header" : ""}>
-        <a href={articleUrl && ""} target="_blank">
+        <a href={articleUrl !== null ? articleUrl : ""} target="_blank">
           {title}
         </a>
       </h3>
       <p>
-        by <a href={`/user?id=${author}`}>{author}</a> on{" "}
+        by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
         {formatDateTime(postDate)} with{" "}
-        <a href={`/post?id=${postId}`}>{commentCount}</a> comments
+        <Link href={`/post?id=${postId}`}>{commentCount}</Link> comments
       </p>
     </div>
   )
 }
 
-// Card.propTypes = {
-//   postId: PropTypes.number.isRequired,
-//   title: PropTypes.string.isRequired,
-//   articleUrl: PropTypes.string,
-//   author: PropTypes.string.isRequired,
-//   postDate: PropTypes.number.isRequired,
-//   commentCount: PropTypes.number.isRequired
-// }
+Card.propTypes = {
+  postId: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  articleUrl: PropTypes.string,
+  author: PropTypes.string.isRequired,
+  postDate: PropTypes.number.isRequired,
+  commentCount: PropTypes.number.isRequired,
+  page: PropTypes.string.isRequired
+}
 
 export function formatDateTime(unixDate) {
   const date = new Date(unixDate * 1000)

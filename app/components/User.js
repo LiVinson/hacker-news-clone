@@ -2,13 +2,14 @@ import React from "react"
 import PropTypes from "prop-types"
 import { getUserPosts } from "../utils/API"
 import Loading from "./Loading"
+import queryString from "query-string"
+import { Link } from "react-router-dom"
 
 export default class User extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      userId: this.props.user,
       userData: null,
       userStories: [],
       loading: true
@@ -16,7 +17,10 @@ export default class User extends React.Component {
   }
 
   componentDidMount() {
-    const userId = "fanf2" // for testing
+    const values = queryString.parse(this.props.location.search)
+
+    const userId = values.id // for testing
+    console.log(userId)
     getUserPosts(userId).then(user => {
       this.setState({
         userData: user.userData,
@@ -69,9 +73,9 @@ function UserPosts({ userStories }) {
           </h3>
           <p>
             by {story.by} on {story.time} with{" "}
-            <a href={`/post?id=${story.id}`}>
+            <Link to={`/post?id=${story.id}`}>
               {story.kids ? story.kids.length : 0}
-            </a>{" "}
+            </Link>{" "}
             comments
           </p>
         </li>

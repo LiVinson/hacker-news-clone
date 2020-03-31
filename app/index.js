@@ -6,16 +6,30 @@ import Navbar from "./components/NavBar"
 import User from "./components/User"
 import Comment from "./components/Comment"
 import { Container } from "./components/Container"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
 class App extends React.Component {
   render() {
     return (
-      <Container>
-        <Navbar />
-        {/* <News storyType="top" />*/}
-        {/* <User />*/}
-        <Comment />
-      </Container>
+      <Router>
+        <Container>
+          <Navbar />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={props => <News {...props} storyType="top" />}
+            />
+            <Route
+              exact
+              path="/new"
+              render={props => <News {...props} storyType="new" />}
+            />
+            <Route path="/user" component={User} />
+            <Route path="/post" component={Comment} />
+          </Switch>
+        </Container>
+      </Router>
     )
   }
 }

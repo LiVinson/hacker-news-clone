@@ -2,13 +2,14 @@ import React from "react"
 import { getStoryComments } from "../utils/API"
 import Loading from "./Loading"
 import { Card, formatDateTime } from "./Card"
+import queryString from "query-string"
+import { Link } from "react-router-dom"
 
 export default class Comment extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      storyId: props.storyId,
       story: null,
       commentIds: null,
       comments: null,
@@ -17,9 +18,9 @@ export default class Comment extends React.Component {
   }
 
   componentDidMount() {
-    const storyId = 22722211
+    const values = queryString.parse(this.props.location.search)
 
-    getStoryComments(storyId).then(response => {
+    getStoryComments(values.id).then(response => {
       console.log("response received")
       console.log(response)
       this.setState({
@@ -66,7 +67,7 @@ function CommentCard({ author, postDate, text, id }) {
   return (
     <div>
       <p>
-        by <a href={`/user?id=${author}`}>{author}</a> on{" "}
+        by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
         {formatDateTime(postDate)}
       </p>
       <p>{text}</p>

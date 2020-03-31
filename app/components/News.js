@@ -15,10 +15,28 @@ export default class News extends React.Component {
     }
 
     this.displayStories = this.displayStories.bind(this)
+    this.requestStories = this.requestStories.bind(this)
   }
 
   componentDidMount() {
-    getStories(this.state.storyType)
+    this.requestStories()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.storyType !== prevProps.storyType) {
+      this.setState(
+        {
+          loading: true
+        },
+        () => {
+          this.requestStores
+        }
+      )
+    }
+  }
+
+  requestStories() {
+    getStories(this.props.storyType)
       .then(response => {
         console.log("request story response received")
         this.setState({
@@ -49,7 +67,7 @@ export default class News extends React.Component {
   render() {
     const { stories, loading } = this.state
     const loadingMessage =
-      this.state.storyType === "top"
+      this.props.storyType === "top"
         ? "Fetching Top Stories"
         : "Fetching New Stories"
     return loading === true ? (
