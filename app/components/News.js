@@ -14,7 +14,6 @@ export default class News extends React.Component {
       loading: true
     }
 
-    this.displayStories = this.displayStories.bind(this)
     this.requestStories = this.requestStories.bind(this)
   }
 
@@ -48,9 +47,23 @@ export default class News extends React.Component {
         console.log(err)
       })
   }
+  render() {
+    const { stories, loading } = this.state
+    const loadingMessage =
+      this.props.storyType === "top"
+        ? "Fetching Top Stories"
+        : "Fetching New Stories"
+    return loading === true ? (
+      <Loading message={loadingMessage} />
+    ) : (
+      <DisplayStories stories={stories} />
+    )
+  }
+}
 
-  displayStories(story) {
-    return (
+function DisplayStories({ stories }) {
+  return stories.length > 0 ? (
+    stories.map(story => (
       <li key={story.id} className="list-item">
         <Card
           postId={story.id}
@@ -61,21 +74,8 @@ export default class News extends React.Component {
           commentCount={story.kids ? story.kids.length : 0}
         />
       </li>
-    )
-  }
-
-  render() {
-    const { stories, loading } = this.state
-    const loadingMessage =
-      this.props.storyType === "top"
-        ? "Fetching Top Stories"
-        : "Fetching New Stories"
-    return loading === true ? (
-      <Loading message={loadingMessage} />
-    ) : stories.length > 0 ? (
-      <ul>{stories.map(this.displayStories)}</ul>
-    ) : (
-      <h1>No Top Stories</h1>
-    )
-  }
+    ))
+  ) : (
+    <h1>No Top Stories</h1>
+  )
 }

@@ -4,7 +4,18 @@ body {
 }
 /* Container element - centers everything. Adds margins to the sides and top */
 .container {
-  margin: 15px 0 40px 40px;
+  padding: 20px 20px;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.space-around {
+  justify-content: space-between;
 }
 
 .list-item {
@@ -15,6 +26,11 @@ body {
 
 ul {
   padding: 0px;
+}
+
+.btn-clear {
+  background: transparent;
+  border: none;
 }
 /*
 news list items: Add spacing between each
