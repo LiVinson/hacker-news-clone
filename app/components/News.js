@@ -63,6 +63,10 @@ export default class News extends React.Component {
   }
 }
 
+News.propType = {
+  storyType: PropTypes.string.isRequired
+}
+
 //Input: array of story objects
 //Output: A list item for each story made of Card component
 function DisplayStories({ stories }) {

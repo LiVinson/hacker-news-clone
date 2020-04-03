@@ -28,32 +28,7 @@ ul {
   padding: 0px;
 }
 
-.btn-clear {
-  background: transparent;
-  border: none;
-}
-/*
-Top and new article title 
-*/
-.article-link {
-  display: inline-block;
-  text-decoration: none;
-  color: rgb(204, 20, 20);
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.list-item p {
-  margin-bottom: 0px;
-  margin-top: 5px;
-  font-size: 18px;
-  color: rgb(133, 129, 129);
-}
-
-.list-item p a {
-  color: rgb(0, 0, 0);
-}
-
+/*Navbar Styling*/
 .navbar {
   padding-top: 50px;
   padding-bottom: 20px;
@@ -65,4 +40,35 @@ Top and new article title
   font-size: 18px;
   color: rgb(0, 0, 0);
   font-weight: bold;
+}
+.btn-clear {
+  background: transparent;
+  border: none;
+}
+
+/*
+Top and new article title 
+*/
+.article-link {
+  display: inline-block;
+  text-decoration: none;
+  color: rgb(204, 20, 20);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 0px;
+  margin-top: 5px;
+  font-size: 18px;
+  color: rgb(133, 129, 129);
+}
+
+.list-item p a {
+  color: rgb(0, 0, 0);
+}
+
+h1 {
+  margin-top: 0px;
+  margin-bottom: 5px;
 }

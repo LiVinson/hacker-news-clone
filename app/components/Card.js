@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
+import { formatDateTime } from "../utils/helper"
 
 export function Card({
   postId,
@@ -23,7 +24,7 @@ export function Card({
 
       <p>
         by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
-        {formatDateTime(postDate)} with{" "}
+        {(formatDateTime(postDate), true)} with{" "}
         <Link href={`/post?id=${postId}`}>{commentCount}</Link> comments
       </p>
     </div>
@@ -38,24 +39,4 @@ Card.propTypes = {
   postDate: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
   page: PropTypes.string
-}
-
-export function formatDateTime(unixDate) {
-  const date = new Date(unixDate * 1000)
-  const year = date.getFullYear()
-  let month = 1 + date.getMonth()
-  let day = date.getDate()
-  let hours = date.getHours()
-  let timeOfDay = "AM"
-  if (hours >= 12) {
-    timeOfDay = "PM"
-    if (hours > 12) {
-      hours = hours - 12
-    }
-  }
-
-  let minutes = date.getMinutes()
-  minutes = minutes < 10 ? "0" + minutes : minutes
-  const formattedTime = `${month}/${day}/${year}, ${hours}:${minutes} ${timeOfDay}`
-  return formattedTime
 }
