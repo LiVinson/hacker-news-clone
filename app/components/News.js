@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { getStories } from "../utils/API"
-import { Card } from "./Card"
+import Card from "./Card"
 import Loading from "./Loading"
 
 export default class News extends React.Component {
@@ -80,7 +80,6 @@ function DisplayStories({ stories }) {
           author={story.by}
           postDate={story.time}
           commentCount={story.kids ? story.kids.length : 0}
-          page="news"
         />
       </li>
     ))

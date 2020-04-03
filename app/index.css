@@ -18,14 +18,32 @@ body {
   justify-content: space-between;
 }
 
+/*General Elements */
+h1 {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+ul {
+  padding: 0px;
+}
+
 .list-item {
   list-style-type: none;
   margin-bottom: 20px;
   padding-left: none;
 }
 
-ul {
-  padding: 0px;
+p,
+.comment-author {
+  margin-bottom: 0px;
+  margin-top: 5px;
+  font-size: 18px;
+  color: rgb(133, 129, 129);
+}
+
+p a {
+  color: rgb(0, 0, 0);
 }
 
 /*Navbar Styling*/
@@ -57,18 +75,19 @@ Top and new article title
   font-weight: bold;
 }
 
-p {
-  margin-bottom: 0px;
-  margin-top: 5px;
-  font-size: 18px;
-  color: rgb(133, 129, 129);
+/*Comment page header*/
+.article-header {
+  font-size: 28px;
 }
 
-.list-item p a {
-  color: rgb(0, 0, 0);
+.comment-card {
+  background-color: rgb(242, 242, 242);
+  padding: 20px 15px;
+  border-radius: 2%;
 }
 
-h1 {
-  margin-top: 0px;
-  margin-bottom: 5px;
+.comment-text p {
+  color: #000000;
+  padding-bottom: 15px;
+  padding-top: 10px;
 }

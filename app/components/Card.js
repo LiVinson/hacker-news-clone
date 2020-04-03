@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
 import { formatDateTime } from "../utils/helper"
 
-export function Card({
+export default function Card({
   postId,
   title,
   articleUrl,
@@ -16,7 +16,7 @@ export function Card({
     <div>
       <a
         href={articleUrl !== null ? articleUrl : ""}
-        className="article-link"
+        className={`article-link ${page === "post" ? "article-header" : ""}`}
         target="_blank"
       >
         {title}
@@ -24,8 +24,8 @@ export function Card({
 
       <p>
         by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
-        {(formatDateTime(postDate), true)} with{" "}
-        <Link href={`/post?id=${postId}`}>{commentCount}</Link> comments
+        {(formatDateTime(postDate, true), true)} with{" "}
+        <Link to={`/post?id=${postId}`}>{commentCount}</Link> comments
       </p>
     </div>
   )

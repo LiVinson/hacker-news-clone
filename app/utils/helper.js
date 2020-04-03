@@ -1,5 +1,4 @@
 export function createMarkup(text) {
-  console.log(text)
   return {
     __html: text
   }
