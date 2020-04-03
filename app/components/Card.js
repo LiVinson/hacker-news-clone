@@ -13,11 +13,14 @@ export function Card({
 }) {
   return (
     <div>
-      <h3 className={page === "news" ? "article-header" : ""}>
-        <a href={articleUrl !== null ? articleUrl : ""} target="_blank">
-          {title}
-        </a>
-      </h3>
+      <a
+        href={articleUrl !== null ? articleUrl : ""}
+        className="article-link"
+        target="_blank"
+      >
+        {title}
+      </a>
+
       <p>
         by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
         {formatDateTime(postDate)} with{" "}
@@ -34,7 +37,7 @@ Card.propTypes = {
   author: PropTypes.string.isRequired,
   postDate: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
-  page: PropTypes.string.isRequired
+  page: PropTypes.string
 }
 
 export function formatDateTime(unixDate) {
@@ -44,9 +47,11 @@ export function formatDateTime(unixDate) {
   let day = date.getDate()
   let hours = date.getHours()
   let timeOfDay = "AM"
-  if (hours >= 13) {
+  if (hours >= 12) {
     timeOfDay = "PM"
-    hours = hours - 12
+    if (hours > 12) {
+      hours = hours - 12
+    }
   }
 
   let minutes = date.getMinutes()

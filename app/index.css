@@ -20,7 +20,7 @@ body {
 
 .list-item {
   list-style-type: none;
-  padding-bottom: 10px;
+  margin-bottom: 20px;
   padding-left: none;
 }
 
@@ -33,16 +33,14 @@ ul {
   border: none;
 }
 /*
-news list items: Add spacing between each
+Top and new article title 
 */
-.article-header {
-  font-size: 18px;
-  margin-bottom: 5px;
-}
-
-.article-header a {
+.article-link {
+  display: inline-block;
   text-decoration: none;
   color: rgb(204, 20, 20);
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .list-item p {

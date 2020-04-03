@@ -5,7 +5,7 @@ const styles = {
   color: "rgb(204, 20, 20)",
   fontWeight: "bold"
 }
-export default function NavBar(props) {
+export default function NavBar() {
   return (
     <nav className="navbar row space-around">
       <ul className="row">
