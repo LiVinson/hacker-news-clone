@@ -66,7 +66,7 @@ class App extends React.Component {
 //Next Steps:
 
 //--Required Required:
-//Update favicon
+
 //Finish dark theme styling/clean up context
 //Production Ready - update redirects to work w/ netlify
 
