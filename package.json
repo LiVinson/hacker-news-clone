@@ -19,7 +19,8 @@
         {
           "regenerator": true
         }
-      ]
+      ],
+      "syntax-dynamic-import"
     ]
   },
   "keywords": [],

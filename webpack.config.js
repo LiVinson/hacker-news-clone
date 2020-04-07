@@ -6,17 +6,22 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "index_bundle.js",
-    publicPath: "/"
+    publicPath: "/",
   },
   module: {
     rules: [
       { test: /\.js$/, use: "babel-loader" },
-      { test: /\.css/, use: ["style-loader", "css-loader"] }
-    ]
+      { test: /\.css/, use: ["style-loader", "css-loader"] },
+    ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "./app/index.html" })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./app/index.html",
+      favicon: "./app/favicon.ico",
+    }),
+  ],
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
   },
-  mode: "development"
+  mode: "development",
 }
