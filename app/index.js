@@ -15,12 +15,12 @@ class App extends React.Component {
       theme: "light",
       changeTheme: () => {
         console.log("theme change")
-        this.setState(curState => {
+        this.setState((curState) => {
           return {
-            theme: curState.theme === "light" ? "dark" : "light"
+            theme: curState.theme === "light" ? "dark" : "light",
           }
         })
-      }
+      },
     }
 
     this.changeTheme = this.changeTheme.bind(this)
@@ -31,25 +31,27 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Container>
-          <ThemeProvider value={this.state}>
-            <Navbar />
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={props => <News {...props} storyType="top" />}
-              />
-              <Route
-                exact
-                path="/new"
-                render={props => <News {...props} storyType="new" />}
-              />
-              <Route path="/user" component={User} />
-              <Route path="/post" component={Comment} />
-            </Switch>
-          </ThemeProvider>
-        </Container>
+        <ThemeProvider value={this.state}>
+          <div className={this.state.theme}>
+            <Container>
+              <Navbar />
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={(props) => <News {...props} storyType="top" />}
+                />
+                <Route
+                  exact
+                  path="/new"
+                  render={(props) => <News {...props} storyType="new" />}
+                />
+                <Route path="/user" component={User} />
+                <Route path="/post" component={Comment} />
+              </Switch>
+            </Container>
+          </div>
+        </ThemeProvider>
       </Router>
     )
   }
@@ -58,10 +60,23 @@ class App extends React.Component {
 //Next Steps:
 
 //Minor styling tweaks - navbar top,
-//Implement Dark theme with context, add state to App to manage
+// Dark theme styling:
+/*
+change body background to black
+navbar: Change black font to white
+change news headers to white
+change news user and comment links to white
+user: change user id, post header, and article header to white
+user: change comments link white
+loading text: white
+Comments: header to white, link text to white
+//main text to white, background to dark gray
+*/
+//Lazy Loading
+//Update favicon
 //Clean up API
 //Clean up commenting
 //Readme
-//Production Ready
+//Production Ready:
 
 ReactDom.render(<App />, document.getElementById("root"))

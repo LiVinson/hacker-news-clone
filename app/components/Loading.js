@@ -1,5 +1,6 @@
 import React from "react"
 import propTypes from "prop-types"
+import { ThemeConsumer } from "../context/theme"
 
 export default class Loading extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ export default class Loading extends React.Component {
     this.state = {
       message: props.message,
       loadingState: "",
-      interval: null
+      interval: null,
     }
 
     this.updateLoadingState = this.updateLoadingState.bind(this)
@@ -18,7 +19,7 @@ export default class Loading extends React.Component {
     this.setState(({ loadingState }) => {
       const newLoadingState = loadingState === "..." ? "" : loadingState + "."
       return {
-        loadingState: newLoadingState
+        loadingState: newLoadingState,
       }
     })
   }
@@ -26,7 +27,7 @@ export default class Loading extends React.Component {
   componentDidMount() {
     const interval = setInterval(this.updateLoadingState, 600)
     this.setState({
-      interval
+      interval,
     })
   }
 
@@ -36,14 +37,24 @@ export default class Loading extends React.Component {
 
   render() {
     const { message, loadingState } = this.state
-    return <h1>{`${message}${loadingState}`}</h1>
+    return (
+      <ThemeConsumer>
+        {({ theme }) => {
+          return (
+            <h1
+              className={theme === "dark" ? "dark-font" : ""}
+            >{`${message}${loadingState}`}</h1>
+          )
+        }}
+      </ThemeConsumer>
+    )
   }
 }
 
 Loading.propTypes = {
-  message: propTypes.string.isRequired
+  message: propTypes.string.isRequired,
 }
 
 Loading.defaultProps = {
-  message: "Loading"
+  message: "Loading",
 }

@@ -1,7 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { formatDateTime } from "../utils/helper"
+import { ThemeConsumer } from "../context/theme"
 
 export default function Card({
   postId,
@@ -10,10 +11,11 @@ export default function Card({
   author,
   postDate,
   commentCount,
-  page
+  page,
+  theme,
 }) {
   return (
-    <div>
+    <div className={theme === "dark" ? "dark-font" : "light-font"}>
       <a
         href={articleUrl !== null ? articleUrl : ""}
         className={`article-link ${page === "post" ? "article-header" : ""}`}
@@ -23,9 +25,21 @@ export default function Card({
       </a>
 
       <p>
-        by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
-        {(formatDateTime(postDate, true), true)} with{" "}
-        <Link to={`/post?id=${postId}`}>{commentCount}</Link> comments
+        by{" "}
+        <NavLink
+          to={`/user?id=${author}`}
+          className={theme === "dark" ? "dark-font" : ""}
+        >
+          {author}
+        </NavLink>{" "}
+        on {(formatDateTime(postDate, true), true)} with{" "}
+        <NavLink
+          to={`/post?id=${postId}`}
+          className={theme === "dark" ? "dark-font" : ""}
+        >
+          {commentCount}
+        </NavLink>{" "}
+        comments
       </p>
     </div>
   )
@@ -38,5 +52,6 @@ Card.propTypes = {
   author: PropTypes.string.isRequired,
   postDate: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
-  page: PropTypes.string
+  page: PropTypes.string,
+  theme: PropTypes.string.isRequired,
 }

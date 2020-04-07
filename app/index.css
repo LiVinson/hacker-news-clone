@@ -1,6 +1,19 @@
 /* General Component Styling */
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.bold-text {
+  font-weight: bold;
 }
 /* Container element - centers everything. Adds margins to the sides and top */
 .container {
@@ -56,7 +69,7 @@ p a {
   text-decoration: none;
   margin-right: 10px;
   font-size: 18px;
-  color: rgb(0, 0, 0);
+  color: inherit;
   font-weight: bold;
 }
 .btn-clear {
@@ -70,7 +83,7 @@ Top and new article title
 .article-link {
   display: inline-block;
   text-decoration: none;
-  color: rgb(204, 20, 20);
+  color: inherit;
   font-size: 18px;
   font-weight: bold;
 }
@@ -81,13 +94,37 @@ Top and new article title
 }
 
 .comment-card {
-  background-color: rgb(242, 242, 242);
   padding: 20px 15px;
   border-radius: 2%;
 }
 
+.light-bg {
+  background-color: rgb(242, 242, 242);
+}
+
+.dark-bg {
+  background-color: rgb(74, 72, 72);
+}
 .comment-text p {
-  color: #000000;
   padding-bottom: 15px;
   padding-top: 10px;
+}
+
+/*Dark Theme*/
+.dark {
+  background-color: rgb(28, 27, 27);
+  min-height: 100%;
+}
+
+.dark-font {
+  color: rgb(224, 224, 224);
+}
+
+.light-font {
+  color: rgb(204, 20, 20);
+}
+
+.dark-font p,
+.dark-font a {
+  color: rgb(224, 224, 224);
 }

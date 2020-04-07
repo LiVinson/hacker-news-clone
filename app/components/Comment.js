@@ -4,8 +4,8 @@ import Loading from "./Loading"
 import Card from "./Card"
 import { getStoryComments } from "../utils/API"
 import { formatDateTime, createMarkup } from "../utils/helper"
-
-import { Link } from "react-router-dom"
+import { ThemeConsumer } from "../context/theme"
+import { NavLink } from "react-router-dom"
 
 export default class Comment extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class Comment extends React.Component {
       commentIds: null,
       comments: null,
       loading: true,
-      error: false
+      error: false,
     }
   }
 
@@ -25,18 +25,18 @@ export default class Comment extends React.Component {
     const values = queryString.parse(this.props.location.search)
 
     getStoryComments(values.id)
-      .then(response => {
+      .then((response) => {
         this.setState({
           story: response.story,
           comments: response.comments,
-          loading: false
+          loading: false,
         })
       })
-      .catch(error => {
+      .catch((error) => {
         console.warn(error)
         this.setState({
           loading: false,
-          error: true
+          error: true,
         })
       })
   }
@@ -62,42 +62,58 @@ function DisplayCommentOrMessage({ loading, comments, story, error }) {
     return <h1> There was a problem fetching user comments</h1>
   } else {
     return (
-      <React.Fragment>
-        <Card
-          postId={story.id}
-          title={story.title}
-          articleUrl={story.url}
-          author={story.by}
-          postDate={story.time}
-          commentCount={story.kids ? story.kids.length : 0}
-          page="post"
-        />
-        <ul>
-          {comments.map(comment => (
-            <li key={comment.id} className="list-item">
-              <CommentCard
-                author={comment.by}
-                postDate={comment.time}
-                text={comment.text}
-                id={comment.id}
+      <ThemeConsumer>
+        {({ theme }) => {
+          return (
+            <React.Fragment>
+              <Card
+                postId={story.id}
+                title={story.title}
+                articleUrl={story.url}
+                author={story.by}
+                postDate={story.time}
+                commentCount={story.kids ? story.kids.length : 0}
+                page="post"
+                theme={theme}
               />
-            </li>
-          ))}
-        </ul>
-      </React.Fragment>
+              <ul>
+                {comments.map((comment) => (
+                  <li key={comment.id} className="list-item">
+                    <CommentCard
+                      author={comment.by}
+                      postDate={comment.time}
+                      text={comment.text}
+                      id={comment.id}
+                      theme={theme}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </React.Fragment>
+          )
+        }}
+      </ThemeConsumer>
     )
   }
 }
 
-function CommentCard({ author, postDate, text, id }) {
+function CommentCard({ author, postDate, text, id, theme }) {
   return (
-    <div className="comment-card">
+    <div
+      className={`comment-card ${theme === "dark" ? "dark-bg" : "light-bg"}`}
+    >
       <p className="comment-author">
-        by <Link to={`/user?id=${author}`}>{author}</Link> on{" "}
-        {formatDateTime(postDate, true)}
+        by{" "}
+        <NavLink
+          to={`/user?id=${author}`}
+          className={theme === "dark" ? "dark-font" : ""}
+        >
+          {author}
+        </NavLink>{" "}
+        on {formatDateTime(postDate, true)}
       </p>
 
-      <div className="comment-text">
+      <div className={`comment-text ${theme === "dark" ? "dark-font" : ""}`}>
         <p dangerouslySetInnerHTML={createMarkup(text)} />
       </div>
     </div>

@@ -1,10 +1,11 @@
 import React from "react"
 import PropTypes from "prop-types"
 import queryString from "query-string"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import Loading from "./Loading"
 import { getUserPosts } from "../utils/API"
 import { formatDateTime, createMarkup } from "../utils/helper"
+import { ThemeConsumer } from "../context/theme"
 
 export default class User extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class User extends React.Component {
       userData: null,
       userStories: [],
       loading: true,
-      error: false
+      error: false,
     }
   }
 
@@ -24,17 +25,17 @@ export default class User extends React.Component {
     const userId = values.id
 
     getUserPosts(userId)
-      .then(user => {
+      .then((user) => {
         this.setState({
           userData: user.userData,
           userStories: user.userPosts,
-          loading: false
+          loading: false,
         })
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({
           loading: false,
-          error: true
+          error: true,
         })
       })
   }
@@ -54,56 +55,73 @@ export default class User extends React.Component {
 }
 
 function DisplayUserOrMessage({ loading, userData, userStories, error }) {
-  if (loading) {
-    return <Loading message="Fetching user data" />
-  } else if (error) {
-    return <h2>There was a problem fetching user data.</h2>
-  } else {
-    return (
-      <React.Fragment>
-        <UserCard
-          id={userData.id}
-          created={userData.created}
-          karma={userData.karma}
-          about={userData.about}
-        />
-        <h2>Posts</h2>
-        <UserPosts userStories={userStories} />
-      </React.Fragment>
-    )
-  }
+  return (
+    <ThemeConsumer>
+      {({ theme }) => {
+        if (loading) {
+          return <Loading message="Fetching user data" />
+        } else if (error) {
+          return <h2>There was a problem fetching user data.</h2>
+        } else {
+          return (
+            <React.Fragment>
+              <UserCard
+                id={userData.id}
+                created={userData.created}
+                karma={userData.karma}
+                about={userData.about}
+                theme={theme}
+              />
+              <h2 className={theme === "dark" ? "dark-font" : ""}>Posts</h2>
+              <UserPosts userStories={userStories} theme={theme} />
+            </React.Fragment>
+          )
+        }
+      }}
+    </ThemeConsumer>
+  )
 }
 
-function UserCard({ id, created, karma, about }) {
+function UserCard({ id, created, karma, about, theme }) {
   return (
     <div>
-      <h1 className="user-header">{id}</h1>
+      <h1 className={theme === "dark" ? "dark-font" : ""}>{id}</h1>
       <p>
         joined{" "}
-        <span styles={{ fontWeight: "bold" }}>
-          {formatDateTime(created, false)}
-        </span>{" "}
-        | <span styles={{ fontWeight: "bold" }}>{karma}</span> karma
+        <span className="bold-text">{formatDateTime(created, false)}</span> |{" "}
+        <span className="bold-text">{karma}</span> karma
       </p>
       <p dangerouslySetInnerHTML={createMarkup(about)} />
     </div>
   )
 }
 
-function UserPosts({ userStories }) {
+function UserPosts({ userStories, theme }) {
   return (
     <ul>
-      {userStories.map(story => (
-        <li key={story.id} className="list-item">
+      {userStories.map((story) => (
+        <li
+          key={story.id}
+          className={`list-item ${
+            theme === "dark" ? "dark-font" : "light-font"
+          }`}
+        >
           <a href={story.url} className="article-link" target="_blank">
             {story.title}
           </a>
 
           <p>
-            by {story.by} on {story.time} with{" "}
-            <Link to={`/post?id=${story.id}`}>
+            by{" "}
+            <NavLink
+              to={`user?id=${story.by}`}
+              className={theme === "dark" ? "dark-font" : ""}
+            >
+              {story.by}
+            </NavLink>{" "}
+            on {formatDateTime(story.time, false)} with{" "}
+            <NavLink to={`/post?id=${story.id}`}>
               {story.kids ? story.kids.length : 0}
-            </Link>{" "}
+            </NavLink>{" "}
             comments
           </p>
         </li>

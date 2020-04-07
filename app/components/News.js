@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { getStories } from "../utils/API"
 import Card from "./Card"
 import Loading from "./Loading"
+import { ThemeConsumer } from "../context/theme"
 
 export default class News extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class News extends React.Component {
     this.state = {
       stories: [],
       error: null,
-      loading: true
+      loading: true,
     }
 
     this.requestStories = this.requestStories.bind(this)
@@ -25,7 +26,7 @@ export default class News extends React.Component {
     if (this.props.storyType !== prevProps.storyType) {
       this.setState(
         {
-          loading: true
+          loading: true,
         },
         () => {
           this.requestStores
@@ -36,17 +37,18 @@ export default class News extends React.Component {
 
   requestStories() {
     getStories(this.props.storyType)
-      .then(response => {
+      .then((response) => {
         console.log("request story response received")
         this.setState({
           stories: response,
-          loading: false
+          loading: false,
         })
       })
-      .catch(error => {
+      .catch((error) => {
+        console.warn(error)
         this.setState({
           loading: false,
-          error: error
+          error: error,
         })
       })
   }
@@ -64,32 +66,46 @@ export default class News extends React.Component {
 }
 
 News.propType = {
-  storyType: PropTypes.string.isRequired
+  storyType: PropTypes.string.isRequired,
 }
 
 //Input: array of story objects
 //Output: A list item for each story made of Card component
 function DisplayStories({ stories }) {
-  return stories.length > 0 ? (
-    stories.map(story => (
-      <li key={story.id} className="list-item">
-        <Card
-          postId={story.id}
-          title={story.title}
-          articleUrl={story.url}
-          author={story.by}
-          postDate={story.time}
-          commentCount={story.kids ? story.kids.length : 0}
-        />
-      </li>
-    ))
-  ) : (
-    <h1>No Top Stories</h1>
+  return (
+    <ThemeConsumer>
+      {({ theme }) => {
+        return stories.length > 0 ? (
+          stories.map((story) => (
+            <li
+              key={story.id}
+              className={`list-item ${
+                theme === "dark" ? "dark-font" : "light-font"
+              }`}
+            >
+              <Card
+                postId={story.id}
+                title={story.title}
+                articleUrl={story.url}
+                author={story.by}
+                postDate={story.time}
+                commentCount={story.kids ? story.kids.length : 0}
+                theme={theme}
+              />
+            </li>
+          ))
+        ) : (
+          <h1 className={theme === "dark" ? "dark-font" : ""}>
+            No Top Stories
+          </h1>
+        )
+      }}
+    </ThemeConsumer>
   )
 }
 
 DisplayStories.propType = {
-  stories: PropTypes.array.isRequired
+  stories: PropTypes.array.isRequired,
 }
 
 //Input: array of stories, loading and error boolean, and storyType
@@ -110,5 +126,5 @@ DisplayNews.propType = {
   stories: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  storyType: PropTypes.string.isRequred
+  storyType: PropTypes.string.isRequred,
 }

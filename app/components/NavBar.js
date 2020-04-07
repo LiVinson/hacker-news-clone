@@ -4,7 +4,7 @@ import { ThemeConsumer } from "../context/theme"
 
 const styles = {
   color: "rgb(204, 20, 20)",
-  fontWeight: "bold"
+  fontWeight: "bold",
 }
 
 export default function NavBar() {
@@ -14,12 +14,16 @@ export default function NavBar() {
         return (
           <nav className="navbar row space-around">
             <ul className="row">
-              <li className="list-item">
+              <li
+                className={`list-item ${theme === "dark" ? "dark-font" : ""}`}
+              >
                 <NavLink exact to="/" activeStyle={styles}>
                   Top
                 </NavLink>
               </li>
-              <li className="list-item">
+              <li
+                className={`list-item ${theme === "dark" ? "dark-font" : ""}`}
+              >
                 <NavLink to="/new" activeStyle={styles}>
                   New
                 </NavLink>
