@@ -6,11 +6,6 @@ import Navbar from "./components/NavBar"
 import Loading from "./components/Loading"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { ThemeProvider } from "./context/theme"
-
-// import News from "./components/News"
-// import User from "./components/User"
-// import Comment from "./components/Comment"
-
 const News = React.lazy(() => import("./components/News"))
 const User = React.lazy(() => import("./components/User"))
 const Comment = React.lazy(() => import("./components/Comment"))
@@ -36,7 +31,7 @@ class App extends React.Component {
       <Router>
         <ThemeProvider value={this.state}>
           <div className={this.state.theme}>
-            <Container>
+            <Container theme={this.state.theme}>
               <Navbar />
               <React.Suspense fallback={<Loading />}>
                 <Switch>
@@ -67,14 +62,16 @@ class App extends React.Component {
 
 //--Required Required:
 
+//finish API - add rest of try/catch statements - complete testing
+
 //Finish dark theme styling/clean up context
+//remove unnecessary logs
 //Production Ready - update redirects to work w/ netlify
 
 //---Nice to Have
 
 //Update to class fields
-//Clean up API
-//Clean up commenting
 //Improve 404 page
+//add testing?
 
 ReactDom.render(<App />, document.getElementById("root"))

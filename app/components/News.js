@@ -51,7 +51,6 @@ export default class News extends React.Component {
         })
       })
       .catch((error) => {
-        console.error(error)
         this.setState({
           loading: false,
           error: error.message,
@@ -78,15 +77,23 @@ News.propType = {
 //Input: array of stories, loading boolean,  error message, and storyType (new or top)
 //Output: Component to DisplayStories, Loading, or Error message
 function DisplayNews({ stories, loading, error, storyType }) {
-  if (loading) {
-    const loadingMessage =
-      storyType === "top" ? "Fetching Top Stories" : "Fetching New Stories"
-    return <Loading message={loadingMessage} />
-  } else if (error) {
-    return <h2>{error}</h2>
-  } else {
-    return <DisplayStories stories={stories} />
-  }
+  return (
+    <ThemeConsumer>
+      {({ theme }) => {
+        if (loading) {
+          const loadingMessage =
+            storyType === "top"
+              ? "Fetching Top Stories"
+              : "Fetching New Stories"
+          return <Loading message={loadingMessage} theme={theme} />
+        } else if (error) {
+          return <h2>{error}</h2>
+        } else {
+          return <DisplayStories stories={stories} theme={theme} />
+        }
+      }}
+    </ThemeConsumer>
+  )
 }
 
 DisplayNews.propType = {
@@ -98,36 +105,26 @@ DisplayNews.propType = {
 
 //Input: array of story objects
 //Output: A list item for each story made of Card component
-function DisplayStories({ stories }) {
-  return (
-    <ThemeConsumer>
-      {({ theme }) => {
-        return stories.length > 0 ? (
-          stories.map((story) => (
-            <li
-              key={story.id}
-              className={`list-item ${
-                theme === "dark" ? "dark-font" : "light-font"
-              }`}
-            >
-              <Card
-                postId={story.id}
-                title={story.title}
-                articleUrl={story.url}
-                author={story.by}
-                postDate={story.time}
-                commentCount={story.kids ? story.kids.length : 0}
-                theme={theme}
-              />
-            </li>
-          ))
-        ) : (
-          <h1 className={theme === "dark" ? "dark-font" : ""}>
-            No Top Stories
-          </h1>
-        )
-      }}
-    </ThemeConsumer>
+function DisplayStories({ stories, theme }) {
+  return stories.length > 0 ? (
+    stories.map((story) => (
+      <li
+        key={story.id}
+        className={`list-item ${theme === "dark" ? "dark-font" : "light-font"}`}
+      >
+        <Card
+          postId={story.id}
+          title={story.title}
+          articleUrl={story.url}
+          author={story.by}
+          postDate={story.time}
+          commentCount={story.kids ? story.kids.length : 0}
+          theme={theme}
+        />
+      </li>
+    ))
+  ) : (
+    <h1 className={theme === "dark" ? "dark-font" : ""}>No Top Stories</h1>
   )
 }
 

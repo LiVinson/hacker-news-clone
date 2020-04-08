@@ -13,13 +13,15 @@ export default class User extends React.Component {
     super(props)
 
     this.state = {
-      userData: null,
+      userData: {},
       userStories: [],
       loading: true,
       error: "",
     }
   }
 
+  //Input: N/A
+  //Output/Result: Updating state with userData object and userStories array
   componentDidMount() {
     //Retrive user id from url query
     const values = queryString.parse(this.props.location.search)
@@ -57,12 +59,14 @@ export default class User extends React.Component {
   }
 }
 
+//Input: loading boolean, userData object, userStories array, error string
+//Output: Loading component, Error message, or UserCard and UserPost component
 function DisplayUserOrMessage({ loading, userData, userStories, error }) {
   return (
     <ThemeConsumer>
       {({ theme }) => {
         if (loading) {
-          return <Loading message="Fetching user data" />
+          return <Loading message="Fetching user data" theme={theme} />
         } else if (error) {
           return <h2>There was a problem fetching user data.</h2>
         } else {
@@ -85,6 +89,15 @@ function DisplayUserOrMessage({ loading, userData, userStories, error }) {
   )
 }
 
+DisplayUserOrMessage.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  userData: PropTypes.object.isRequired,
+  userStories: PropTypes.array.isRequired,
+  error: PropTypes.string.isRequired,
+}
+
+//Input: story id, date created (unix), amount of user karma points, user about description, and theme type
+//Output: Div with user Id and user information
 function UserCard({ id, created, karma, about, theme }) {
   return (
     <div>
@@ -99,6 +112,16 @@ function UserCard({ id, created, karma, about, theme }) {
   )
 }
 
+UserCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  created: PropTypes.number,
+  karma: PropTypes.number.isRequired,
+  about: PropTypes.string,
+  theme: PropTypes.string.isRequired,
+}
+
+//Input: array of user stories, theme type
+//Output: List of posts with title, author, date and number of comments
 function UserPosts({ userStories, theme }) {
   return (
     <ul>
@@ -131,4 +154,9 @@ function UserPosts({ userStories, theme }) {
       ))}
     </ul>
   )
+}
+
+UserPosts.propTypes = {
+  userStories: PropTypes.array.isRequired,
+  theme: PropTypes.string.isRequired,
 }

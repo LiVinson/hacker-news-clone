@@ -1,16 +1,14 @@
 import React from "react"
-import { ThemeConsumer } from "../context/theme"
+import PropTypes from "prop-types"
 
-export function Container({ children }) {
+export function Container({ theme, children }) {
   return (
-    <ThemeConsumer>
-      {({ theme }) => {
-        return (
-          <div className={`container ${theme === "dark" ? "bg-dark" : ""}`}>
-            {children}
-          </div>
-        )
-      }}
-    </ThemeConsumer>
+    <div className={`container ${theme === "dark" ? "bg-dark" : ""}`}>
+      {children}
+    </div>
   )
+}
+
+Container.propTypes = {
+  theme: PropTypes.string.isRequired,
 }

@@ -1,6 +1,5 @@
 import React from "react"
 import propTypes from "prop-types"
-import { ThemeConsumer } from "../context/theme"
 
 export default class Loading extends React.Component {
   constructor(props) {
@@ -31,23 +30,31 @@ export default class Loading extends React.Component {
     })
   }
 
+  // componentDidUpdate(prevProps) {
+
+  //   if (this.props.theme !== prevProps.theme) {
+  //     this.updateLoadingState()
+  //   }
+  // }
+
   componentWillUnmount() {
     clearInterval(this.state.interval)
   }
 
   render() {
     const { message, loadingState } = this.state
+    const { theme } = this.props
     return (
-      <ThemeConsumer>
-        {({ theme }) => {
-          return (
-            <h1
-              className={theme === "dark" ? "dark-font" : ""}
-            >{`${message}${loadingState}`}</h1>
-          )
-        }}
-      </ThemeConsumer>
+      // <ThemeConsumer>
+      //   {({ theme }) => {
+      // return (
+      <h1
+        className={theme === "dark" ? "dark-font" : ""}
+      >{`${message}${loadingState}`}</h1>
     )
+    // }}
+    // </ThemeConsumer>
+    //   )
   }
 }
 

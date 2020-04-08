@@ -2,7 +2,6 @@ import React from "react"
 import PropTypes from "prop-types"
 import { NavLink } from "react-router-dom"
 import { formatDateTime } from "../utils/helper"
-import { ThemeConsumer } from "../context/theme"
 
 export default function Card({
   postId,
