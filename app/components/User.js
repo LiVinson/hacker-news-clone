@@ -1,10 +1,11 @@
 import React from "react"
 import PropTypes from "prop-types"
 import queryString from "query-string"
-import { NavLink } from "react-router-dom"
+
 import Loading from "./Loading"
 import { getUserPosts } from "../utils/API"
 import { formatDateTime, createMarkup } from "../utils/helper"
+import { NavLink } from "react-router-dom"
 import { ThemeConsumer } from "../context/theme"
 
 export default class User extends React.Component {
@@ -15,7 +16,7 @@ export default class User extends React.Component {
       userData: null,
       userStories: [],
       loading: true,
-      error: false,
+      error: "",
     }
   }
 
@@ -33,9 +34,11 @@ export default class User extends React.Component {
         })
       })
       .catch((error) => {
+        console.error(error)
         this.setState({
+          userStories: [],
           loading: false,
-          error: true,
+          error: error.message,
         })
       })
   }

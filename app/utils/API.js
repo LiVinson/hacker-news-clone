@@ -1,50 +1,57 @@
-//Called when News component mounts. Returns story Ids in array.
+//Input: string - type of story (new or top)
+//Output: Array of story objects
 export async function getStories(storyType) {
   //returns promise with array of up to 500 stories
-  let storyIds
+  let storyIds = []
   if (storyType === "top") {
     storyIds = await getTopStoryIds()
   } else {
+    //new stories
     storyIds = await getNewStoryIds()
   }
 
-  if (storyIds.length > 0) {
-    const max100StoryIds =
-      storyIds.length > 100 ? storyIds.slice(0, 100) : storyIds
+  if (storyIds.error) {
+    throw new Error(`There was an error fetching ${storyType} stories.`)
+  } else if (storyIds.length === 0) {
+    return []
+  } else {
+    //Limit number of story ids in array to 100
+    const limitedStoryIds = limitResults(storyIds, 100)
 
-    //Returns an array of story and job objects wrapped in promise
-    const storiesAndJobs = await getStoriesArray(max100StoryIds)
-    const stories = storiesAndJobs.filter(story => story.type === "story")
+    //Returns an array of story and job objects
+    const storiesAndJobs = await getStoriesArray(limitedStoryIds)
+    const stories = filterByType(storiesAndJobs, "type", "story")
     return stories
-  } //deal with error/empty array
+  }
 }
 
-//returns array of top story ids
+//Input: None
+//Output: Array of top story ids from hacker news API
 function getTopStoryIds() {
   return fetch(
     "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
   )
-    .then(response => response.json())
-    .catch(error => console.log(error)) //Add error function
+    .then((response) => response.json())
+    .catch((error) => error)
 }
 
-//returns array of new story ids
+//Input: None
+//Output: Array of new story ids from hacker news API
 function getNewStoryIds() {
   return fetch(
     "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
   )
-    .then(response => response.json())
-    .catch(error => console.log(error)) //Add error function
+    .then((response) => response.json())
+    .catch((error) => error)
 }
 
-//Input: Array of story Ids from previous request to API
-//Output: Array of story objects based on provided Ids
+//Input: Array of story Ids
+//Output: Array of story objects based on provided story Ids
 async function getStoriesArray(storyIds) {
-  return await Promise.all(storyIds.map(requestStory))
-    .then(stories => stories)
-    .catch(error => {
-      console.log(error) //Figure out error handling
-    })
+  //await used to wait for result of mapping over each story id and fetching story  .
+  return Promise.all(storyIds.map(await requestStory)) //pickle - confirm if requests stop on first error.
+    .then((stories) => stories)
+    .catch((error) => error)
 }
 
 //Input: StoryId
@@ -52,81 +59,128 @@ async function getStoriesArray(storyIds) {
 function requestStory(storyId) {
   return fetch(
     `https://hacker-news.firebaseio.com/v0/item/${storyId}.json?print=pretty`
-  )
-    .then(story => story.json())
-    .catch(error => console.log(error)) //Figure out error approach
+  ).then((story) => story.json())
+  // .catch((error) => error)
 }
 
 //======= Users =========//
 
-//Retreive user object with userData and array of users's posted story objets
+//Input: User Id string ---
+//Output: user object with userData object property and userPosts array of story objects
 export async function getUserPosts(userId) {
   const user = {
     userData: null,
-    userPosts: []
+    userPosts: [],
   }
-  //Returns user object from provided if
+  //Returns user object from provided id
   const userData = await getUserData(userId)
 
-  if (userData !== null) {
+  if (userData) {
     user.userData = userData
     const userSubmissionIds = userData.submitted
-    if (userSubmissionIds.length > 0) {
-      const userSubmissionIdsMax150 =
-        userSubmissionIds.length > 100
-          ? userSubmissionIds.slice(0, 150)
-          : userSubmissionIds
 
-      //Returns array of user story and job  objects
-      const userPosts = await getStoriesArray(userSubmissionIdsMax150)
-      const userStoryPosts = userPosts.filter(post => {
-        if (post !== null && post.type === "story") {
-          return post
-        }
-      })
-      user.userPosts = userStoryPosts
-      return user
+    if (userSubmissionIds.length > 0) {
+      const limitedSubmissionIds = limitResults(userSubmissionIds, 151)
+
+      //Returns array of user postings
+      const userPosts = await getStoriesArray(limitedSubmissionIds)
+
+      if (userPosts.length > 0) {
+        //Returns array of all non-story postings filtered out
+        const userStoryPosts = filterByType(userPosts, "type", "story")
+        user.userPosts = userStoryPosts
+      } else {
+        throw new Error(
+          `There was an error retreiving posts for user ${userId}`
+        )
+      }
     }
+    return user
+  } else {
+    throw new Error(
+      `There was an error retreiving information for user ${userId}`
+    )
   }
 }
 
-//Input storyId
-//Returns story Object
+//Input: User Id
+//Output: Returns user object
 function getUserData(userId) {
   return fetch(
     `https://hacker-news.firebaseio.com/v0/user/${userId}.json?print=pretty`
-  ).then(response => response.json())
+  )
+    .then((response) => response.json())
+    .catch((error) => error)
 }
 
 //======== Comments ==============//
 
 //Input: story Id
-//Output: Object with story information and array of comment objects
+//Output: Object with story information and array of comment object properties
 export async function getStoryComments(storyId) {
   const storyData = {
     story: null,
-    comments: []
+    comments: [],
   }
-  //function to get array of Commend Ids
-  const story = await requestStory(storyId)
-  storyData.story = story
-  const commentIds = story.kids
 
-  if (commentIds.length > 0) {
-    const commentDetails = await getCommentDetails(commentIds)
-    console.log("comment details")
-    console.log(commentDetails)
-    storyData.comments = commentDetails
+  try {
+    const story = await requestStory(storyId)
+    storyData.story = story
+    const commentIds = story.kids
+
+    if (commentIds.length > 0) {
+      const commentDetails = await getCommentDetails(commentIds)
+      console.log(commentDetails)
+      storyData.comments = commentDetails
+    }
+    return storyData
+  } catch (error) {
+    console.log(error)
+    throw new Error("There was an error retreiving story and comments.")
   }
-  return storyData
 }
 
-export async function getCommentDetails(commentIds) {
-  return await Promise.all(
-    commentIds.map(comment => {
-      return fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${comment}.json?print=pretty`
-      ).then(response => response.json())
-    })
-  ).then(commentArr => commentArr)
+//Input: Array of comment Ids
+//Output: Array of comment objects corresponding to ids of input array
+async function getCommentDetails(commentIds) {
+  const comments = []
+
+  //for loop allows for breaking out of loop if error received on any fetch request.
+  for (let i = 0; i < commentIds.length; i++) {
+    let comment = await fetch(
+      `https://hacker-news.firebaseio.com/v0/item/${commentIds[i]}.json?print=pretty`
+    )
+      .then((response) => response.json())
+      .then((jsonResponse) => {
+        if (jsonResponse.error) {
+          throw new Error(jsonResponse.error)
+        } else {
+          return jsonResponse
+        }
+      })
+    comments.push(comment)
+  }
+
+  return comments
+}
+
+//------General Functions
+
+//limits number of elements in array
+function limitResults(arr, limit) {
+  let limitedArray
+  if (arr.length > limit) {
+    limitedArray = arr.slice(0, limit)
+  } else {
+    limitedArray = arr
+  }
+  return limitedArray
+}
+
+//Filters out all elements from array except for those with a "filter" value on "property" key of array element
+function filterByType(arr, property, filter) {
+  const filteredArray = arr.filter(
+    (item) => item.hasOwnProperty(property) && item[property] === filter
+  )
+  return filteredArray
 }

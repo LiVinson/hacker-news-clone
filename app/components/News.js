@@ -11,7 +11,7 @@ export default class News extends React.Component {
 
     this.state = {
       stories: [],
-      error: null,
+      error: "",
       loading: true,
     }
 
@@ -22,33 +22,39 @@ export default class News extends React.Component {
     this.requestStories()
   }
 
+  //Input: current storyType (new or top)
+  //If storyType has changed (based on change in nav selection of Top or New), reset loading state and request updated stories
   componentDidUpdate(prevProps) {
     if (this.props.storyType !== prevProps.storyType) {
       this.setState(
         {
           loading: true,
+          error: "",
+          stories: [],
         },
         () => {
-          this.requestStores
+          this.requestStories()
         }
       )
     }
   }
 
+  //Input: None
+  //Output: Set state with stories array received from request, or error message
   requestStories() {
     getStories(this.props.storyType)
       .then((response) => {
-        console.log("request story response received")
         this.setState({
           stories: response,
           loading: false,
+          error: "",
         })
       })
       .catch((error) => {
-        console.warn(error)
+        console.error(error)
         this.setState({
           loading: false,
-          error: error,
+          error: error.message,
         })
       })
   }
@@ -67,6 +73,27 @@ export default class News extends React.Component {
 
 News.propType = {
   storyType: PropTypes.string.isRequired,
+}
+
+//Input: array of stories, loading boolean,  error message, and storyType (new or top)
+//Output: Component to DisplayStories, Loading, or Error message
+function DisplayNews({ stories, loading, error, storyType }) {
+  if (loading) {
+    const loadingMessage =
+      storyType === "top" ? "Fetching Top Stories" : "Fetching New Stories"
+    return <Loading message={loadingMessage} />
+  } else if (error) {
+    return <h2>{error}</h2>
+  } else {
+    return <DisplayStories stories={stories} />
+  }
+}
+
+DisplayNews.propType = {
+  stories: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  storyType: PropTypes.string.isRequred,
 }
 
 //Input: array of story objects
@@ -106,25 +133,4 @@ function DisplayStories({ stories }) {
 
 DisplayStories.propType = {
   stories: PropTypes.array.isRequired,
-}
-
-//Input: array of stories, loading and error boolean, and storyType
-//Output: Component to DisplayStories, Loading, or Error messge
-function DisplayNews({ stories, loading, error, storyType }) {
-  if (loading) {
-    const loadingMessage =
-      storyType === "top" ? "Fetching Top Stories" : "Fetching New Stories"
-    return <Loading message={loadingMessage} />
-  } else if (error) {
-    return <h2>There was a problem fetching news stories.</h2>
-  } else {
-    return <DisplayStories stories={stories} />
-  }
-}
-
-DisplayNews.propType = {
-  stories: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-  storyType: PropTypes.string.isRequred,
 }

@@ -1,9 +1,12 @@
+//Used when dumpoing hacker rank comments to the page. Allows html tags to be rendered.
 export function createMarkup(text) {
   return {
-    __html: text
+    __html: text,
   }
 }
 
+//Input: date in UNIX
+//Output: Date in MM/DD/YYYY or MM/DD/YYYY HH:MM A format
 export function formatDateTime(unixDate, includeTime) {
   const date = new Date(unixDate * 1000)
   const year = date.getFullYear()

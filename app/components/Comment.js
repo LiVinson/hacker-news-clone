@@ -13,10 +13,9 @@ export default class Comment extends React.Component {
 
     this.state = {
       story: null,
-      commentIds: null,
       comments: null,
       loading: true,
-      error: false,
+      error: "",
     }
   }
 
@@ -36,12 +35,13 @@ export default class Comment extends React.Component {
         console.warn(error)
         this.setState({
           loading: false,
-          error: true,
+          error: error.message,
         })
       })
   }
 
   render() {
+    console.log(this.state)
     const { loading, comments, story, error } = this.state
 
     return (
@@ -56,6 +56,7 @@ export default class Comment extends React.Component {
 }
 
 function DisplayCommentOrMessage({ loading, comments, story, error }) {
+  console.log(error)
   if (loading) {
     return <Loading message="Fetching Comments" />
   } else if (error) {

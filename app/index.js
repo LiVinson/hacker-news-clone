@@ -13,7 +13,7 @@ import { ThemeProvider } from "./context/theme"
 
 const News = React.lazy(() => import("./components/News"))
 const User = React.lazy(() => import("./components/User"))
-const Comment = React.lazy(() => import("./components/User"))
+const Comment = React.lazy(() => import("./components/Comment"))
 
 class App extends React.Component {
   constructor(props) {
@@ -71,7 +71,7 @@ class App extends React.Component {
 //Production Ready - update redirects to work w/ netlify
 
 //---Nice to Have
-//Readme
+
 //Update to class fields
 //Clean up API
 //Clean up commenting
