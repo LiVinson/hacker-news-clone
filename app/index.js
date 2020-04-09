@@ -65,7 +65,8 @@ class App extends React.Component {
 //Next Steps:
 //--Required :
 
-//Production Ready - update redirects to work w/ netlify
+//Production Ready -
+//update redirects to work w/ netlify
 
 //---Nice to Have
 
