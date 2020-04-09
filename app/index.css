@@ -2,19 +2,23 @@
 
 html,
 body,
-#root {
+#root,
+a {
   margin: 0;
   height: 100%;
   width: 100%;
+  color: rgb(0, 0, 0);
 }
 
 body {
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Segoe UI", "Dejavu Sans", "Helvetica Neue", "Arial",
+    "sans-serif";
 }
 
 .bold-text {
   font-weight: bold;
 }
+
 /* Container element - centers everything. Adds margins to the sides and top */
 .container {
   padding: 20px 20px;
@@ -37,6 +41,12 @@ h1 {
   margin-bottom: 5px;
 }
 
+p {
+  margin-bottom: 0px;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
 ul {
   padding: 0px;
 }
@@ -47,31 +57,20 @@ ul {
   padding-left: none;
 }
 
-p,
-.comment-author {
-  margin-bottom: 0px;
-  margin-top: 5px;
-  font-size: 18px;
-  color: rgb(133, 129, 129);
-}
-
-p a {
-  color: rgb(0, 0, 0);
-}
-
 /*Navbar Styling*/
 .navbar {
-  padding-top: 50px;
-  padding-bottom: 20px;
+  padding-top: 30px;
+  padding-bottom: 15px;
 }
 
 .navbar a {
   text-decoration: none;
   margin-right: 10px;
   font-size: 18px;
-  color: inherit;
   font-weight: bold;
+  color: inherit;
 }
+
 .btn-clear {
   background: transparent;
   border: none;
@@ -83,7 +82,6 @@ Top and new article title
 .article-link {
   display: inline-block;
   text-decoration: none;
-  color: inherit;
   font-size: 18px;
   font-weight: bold;
 }
@@ -94,8 +92,18 @@ Top and new article title
 }
 
 .comment-card {
-  padding: 20px 15px;
+  padding: 15px 15px;
   border-radius: 2%;
+}
+
+.comment-text p {
+  padding: 10px 0;
+}
+
+/*Dark Theme and  Colors*/
+.dark {
+  background-color: rgb(28, 27, 27);
+  min-height: 100%;
 }
 
 .light-bg {
@@ -103,28 +111,17 @@ Top and new article title
 }
 
 .dark-bg {
-  background-color: rgb(74, 72, 72);
-}
-.comment-text p {
-  padding-bottom: 15px;
-  padding-top: 10px;
+  background-color: rgba(128, 128, 128, 0.15);
 }
 
-/*Dark Theme*/
-.dark {
-  background-color: rgb(28, 27, 27);
-  min-height: 100%;
-}
-
-.dark-font {
-  color: rgb(224, 224, 224);
-}
-
-.light-font {
+.red-text {
   color: rgb(204, 20, 20);
 }
 
-.dark-font p,
-.dark-font a {
+.dark-gray-text {
+  color: rgb(133, 129, 129);
+}
+
+.light-gray-text {
   color: rgb(224, 224, 224);
 }

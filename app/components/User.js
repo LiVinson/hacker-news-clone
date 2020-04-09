@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import queryString from "query-string"
 
 import Loading from "./Loading"
+import Card from "./Card"
 import { getUserPosts } from "../utils/API"
 import { formatDateTime, createMarkup } from "../utils/helper"
 import { NavLink } from "react-router-dom"
@@ -79,7 +80,9 @@ function DisplayUserOrMessage({ loading, userData, userStories, error }) {
                 about={userData.about}
                 theme={theme}
               />
-              <h2 className={theme === "dark" ? "dark-font" : ""}>Posts</h2>
+              <h2 className={theme === "dark" ? "light-gray-text" : ""}>
+                Posts
+              </h2>
               <UserPosts userStories={userStories} theme={theme} />
             </React.Fragment>
           )
@@ -101,13 +104,16 @@ DisplayUserOrMessage.propTypes = {
 function UserCard({ id, created, karma, about, theme }) {
   return (
     <div>
-      <h1 className={theme === "dark" ? "dark-font" : ""}>{id}</h1>
-      <p>
+      <h1 className={theme === "dark" ? "light-gray-text" : ""}>{id}</h1>
+      <p className="dark-gray-text">
         joined{" "}
         <span className="bold-text">{formatDateTime(created, false)}</span> |{" "}
         <span className="bold-text">{karma}</span> karma
       </p>
-      <p dangerouslySetInnerHTML={createMarkup(about)} />
+      <p
+        className={theme === "dark" ? "light-gray-text" : ""}
+        dangerouslySetInnerHTML={createMarkup(about)}
+      />
     </div>
   )
 }
@@ -123,35 +129,29 @@ UserCard.propTypes = {
 //Input: array of user stories, theme type
 //Output: List of posts with title, author, date and number of comments
 function UserPosts({ userStories, theme }) {
+  //handle null stories
   return (
     <ul>
-      {userStories.map((story) => (
-        <li
-          key={story.id}
-          className={`list-item ${
-            theme === "dark" ? "dark-font" : "light-font"
-          }`}
-        >
-          <a href={story.url} className="article-link" target="_blank">
-            {story.title}
-          </a>
-
-          <p>
-            by{" "}
-            <NavLink
-              to={`user?id=${story.by}`}
-              className={theme === "dark" ? "dark-font" : ""}
-            >
-              {story.by}
-            </NavLink>{" "}
-            on {formatDateTime(story.time, false)} with{" "}
-            <NavLink to={`/post?id=${story.id}`}>
-              {story.kids ? story.kids.length : 0}
-            </NavLink>{" "}
-            comments
-          </p>
-        </li>
-      ))}
+      {userStories.map((story) => {
+        {
+          if (story.title) {
+            return (
+              <li key={story.id} className="list-item">
+                <Card
+                  postId={story.id}
+                  title={story.title}
+                  articleUrl={story.url}
+                  author={story.by}
+                  postDate={story.time}
+                  commentCount={story.kids ? story.kids.length : 0}
+                  theme={theme}
+                  postPage={false}
+                />
+              </li>
+            )
+          }
+        }
+      })}
     </ul>
   )
 }

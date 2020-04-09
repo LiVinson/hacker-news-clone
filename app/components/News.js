@@ -87,7 +87,11 @@ function DisplayNews({ stories, loading, error, storyType }) {
               : "Fetching New Stories"
           return <Loading message={loadingMessage} theme={theme} />
         } else if (error) {
-          return <h2>{error}</h2>
+          return (
+            <h2 className={theme === "dark" ? "light-gray-text" : ""}>
+              {error}
+            </h2>
+          )
         } else {
           return <DisplayStories stories={stories} theme={theme} />
         }
@@ -107,22 +111,21 @@ DisplayNews.propType = {
 //Output: A list item for each story made of Card component
 function DisplayStories({ stories, theme }) {
   return stories.length > 0 ? (
-    stories.map((story) => (
-      <li
-        key={story.id}
-        className={`list-item ${theme === "dark" ? "dark-font" : "light-font"}`}
-      >
-        <Card
-          postId={story.id}
-          title={story.title}
-          articleUrl={story.url}
-          author={story.by}
-          postDate={story.time}
-          commentCount={story.kids ? story.kids.length : 0}
-          theme={theme}
-        />
-      </li>
-    ))
+    <ul>
+      {stories.map((story) => (
+        <li key={story.id} className="list-item">
+          <Card
+            postId={story.id}
+            title={story.title}
+            articleUrl={story.url}
+            author={story.by}
+            postDate={story.time}
+            commentCount={story.kids ? story.kids.length : 0}
+            theme={theme}
+          />
+        </li>
+      ))}
+    </ul>
   ) : (
     <h1 className={theme === "dark" ? "dark-font" : ""}>No Top Stories</h1>
   )

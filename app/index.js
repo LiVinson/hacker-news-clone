@@ -33,7 +33,11 @@ class App extends React.Component {
           <div className={this.state.theme}>
             <Container theme={this.state.theme}>
               <Navbar />
-              <React.Suspense fallback={<Loading />}>
+              <React.Suspense
+                fallback={
+                  <Loading message="Loading" theme={this.state.theme} />
+                }
+              >
                 <Switch>
                   <Route
                     exact
@@ -59,19 +63,17 @@ class App extends React.Component {
 }
 
 //Next Steps:
+//--Required :
 
-//--Required Required:
-
-//finish API - add rest of try/catch statements - complete testing
-
-//Finish dark theme styling/clean up context
-//remove unnecessary logs
 //Production Ready - update redirects to work w/ netlify
 
 //---Nice to Have
 
 //Update to class fields
 //Improve 404 page
-//add testing?
+//Improve error messaging
+//add testing
+//switch to more semantic html
+//Improve readme
 
 ReactDom.render(<App />, document.getElementById("root"))

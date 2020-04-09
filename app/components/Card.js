@@ -10,32 +10,38 @@ export default function Card({
   author,
   postDate,
   commentCount,
-  page,
+  postPage = false,
   theme,
 }) {
+  let titleColor = "red-text"
+  let byLineColor = "dark-gray-text"
+  let linkColor = "black-text"
+  let titleType = ""
+  if (postPage) {
+    titleType = "article-header"
+  }
+
+  if (theme === "dark") {
+    titleColor = "light-gray-text"
+    linkColor = "light-gray-text"
+  }
   return (
-    <div className={theme === "dark" ? "dark-font" : "light-font"}>
+    <div>
       <a
         href={articleUrl !== null ? articleUrl : ""}
-        className={`article-link ${page === "post" ? "article-header" : ""}`}
+        className={`article-link ${titleColor} ${titleType}`}
         target="_blank"
       >
         {title}
       </a>
 
-      <p>
+      <p className={byLineColor}>
         by{" "}
-        <NavLink
-          to={`/user?id=${author}`}
-          className={theme === "dark" ? "dark-font" : ""}
-        >
+        <NavLink to={`/user?id=${author}`} className={linkColor}>
           {author}
         </NavLink>{" "}
-        on {(formatDateTime(postDate, true), true)} with{" "}
-        <NavLink
-          to={`/post?id=${postId}`}
-          className={theme === "dark" ? "dark-font" : ""}
-        >
+        on {formatDateTime(postDate, true)} with{" "}
+        <NavLink to={`/post?id=${postId}`} className={linkColor}>
           {commentCount}
         </NavLink>{" "}
         comments

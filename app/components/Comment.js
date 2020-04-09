@@ -63,9 +63,11 @@ export default class Comment extends React.Component {
 
 function DisplayCommentOrMessage({ loading, comments, story, error, theme }) {
   if (loading) {
-    return <Loading message="Fetching Comments" />
+    return <Loading message="Fetching Comments" theme={theme} />
   } else if (error) {
-    return <h1> There was a problem fetching user comments</h1>
+    return (
+      <h2 className={theme === "dark" ? "light-gray-text" : ""}>{error}</h2>
+    )
   } else {
     return (
       <React.Fragment>
@@ -76,21 +78,27 @@ function DisplayCommentOrMessage({ loading, comments, story, error, theme }) {
           author={story.by}
           postDate={story.time}
           commentCount={story.kids ? story.kids.length : 0}
-          page="post"
+          postPage={true}
           theme={theme}
         />
         <ul>
-          {comments.map((comment) => (
-            <li key={comment.id} className="list-item">
-              <CommentCard
-                author={comment.by}
-                postDate={comment.time}
-                text={comment.text}
-                id={comment.id}
-                theme={theme}
-              />
-            </li>
-          ))}
+          {comments.map((comment) => {
+            {
+              if (comment.text) {
+                return (
+                  <li key={comment.id} className="list-item">
+                    <CommentCard
+                      author={comment.by}
+                      postDate={comment.time}
+                      text={comment.text}
+                      id={comment.id}
+                      theme={theme}
+                    />
+                  </li>
+                )
+              }
+            }
+          })}
         </ul>
       </React.Fragment>
     )
@@ -102,18 +110,20 @@ function CommentCard({ author, postDate, text, id, theme }) {
     <div
       className={`comment-card ${theme === "dark" ? "dark-bg" : "light-bg"}`}
     >
-      <p className="comment-author">
+      <p className="dark-gray-text">
         by{" "}
         <NavLink
           to={`/user?id=${author}`}
-          className={theme === "dark" ? "dark-font" : ""}
+          className={theme === "dark" ? "light-gray-text" : ""}
         >
           {author}
         </NavLink>{" "}
         on {formatDateTime(postDate, true)}
       </p>
 
-      <div className={`comment-text ${theme === "dark" ? "dark-font" : ""}`}>
+      <div
+        className={`comment-text ${theme === "dark" ? "light-gray-text" : ""}`}
+      >
         <p dangerouslySetInnerHTML={createMarkup(text)} />
       </div>
     </div>

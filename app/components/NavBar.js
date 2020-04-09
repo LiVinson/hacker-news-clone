@@ -15,14 +15,18 @@ export default function NavBar() {
           <nav className="navbar row space-around">
             <ul className="row">
               <li
-                className={`list-item ${theme === "dark" ? "dark-font" : ""}`}
+                className={`list-item ${
+                  theme === "dark" ? "light-gray-text" : ""
+                }`}
               >
                 <NavLink exact to="/" activeStyle={styles}>
                   Top
                 </NavLink>
               </li>
               <li
-                className={`list-item ${theme === "dark" ? "dark-font" : ""}`}
+                className={`list-item ${
+                  theme === "dark" ? "light-gray-text" : ""
+                }`}
               >
                 <NavLink to="/new" activeStyle={styles}>
                   New
