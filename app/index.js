@@ -16,7 +16,6 @@ class App extends React.Component {
     this.state = {
       theme: "light",
       changeTheme: () => {
-        console.log("theme change")
         this.setState((curState) => {
           return {
             theme: curState.theme === "light" ? "dark" : "light",
@@ -63,12 +62,6 @@ class App extends React.Component {
 }
 
 //Next Steps:
-//--Required :
-
-//Production Ready -
-//update redirects to work w/ netlify
-
-//---Nice to Have
 
 //Update to class fields
 //Improve 404 page

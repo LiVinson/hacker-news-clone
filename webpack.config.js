@@ -18,7 +18,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./app/index.html",
-      // favicon: "./app/favicon.ico",
     }),
     new CopyPlugin([{ from: "_redirects" }]),
   ],

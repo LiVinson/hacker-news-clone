@@ -23,7 +23,6 @@ export default class Loading extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.message)
     const interval = setInterval(this.updateLoadingState, 600)
     this.setState({
       interval,
