@@ -45,7 +45,3 @@ export default class Loading extends React.Component {
 Loading.propTypes = {
   message: propTypes.string.isRequired,
 }
-
-// Loading.defaultProps = {
-//   message: "Loading",
-// }
