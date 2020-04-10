@@ -23,5 +23,5 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
   },
-  mode: "development",
+  mode: process.env.Node_ENV === "production" ? "production" : "development",
 }
