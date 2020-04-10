@@ -1,4 +1,127 @@
-.test {
-  color: red;
-  font-size: 80px;
+/* General Component Styling */
+
+html,
+body,
+#root,
+a {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  color: rgb(0, 0, 0);
+}
+
+body {
+  font-family: "Segoe UI", "Dejavu Sans", "Helvetica Neue", "Arial",
+    "sans-serif";
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+/* Container element - centers everything. Adds margins to the sides and top */
+.container {
+  padding: 20px 20px;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.space-around {
+  justify-content: space-between;
+}
+
+/*General Elements */
+h1 {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+p {
+  margin-bottom: 0px;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+ul {
+  padding: 0px;
+}
+
+.list-item {
+  list-style-type: none;
+  margin-bottom: 20px;
+  padding-left: none;
+}
+
+/*Navbar Styling*/
+.navbar {
+  padding-top: 30px;
+  padding-bottom: 15px;
+}
+
+.navbar a {
+  text-decoration: none;
+  margin-right: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: inherit;
+}
+
+.btn-clear {
+  background: transparent;
+  border: none;
+}
+
+/*
+Top and new article title 
+*/
+.article-link {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/*Comment page header*/
+.article-header {
+  font-size: 28px;
+}
+
+.comment-card {
+  padding: 15px 15px;
+  border-radius: 2%;
+}
+
+.comment-text p {
+  padding: 10px 0;
+}
+
+/*Dark Theme and  Colors*/
+.dark {
+  background-color: rgb(28, 27, 27);
+  min-height: 100%;
+}
+
+.light-bg {
+  background-color: rgb(242, 242, 242);
+}
+
+.dark-bg {
+  background-color: rgba(128, 128, 128, 0.15);
+}
+
+.red-text {
+  color: rgb(204, 20, 20);
+}
+
+.dark-gray-text {
+  color: rgb(133, 129, 129);
+}
+
+.light-gray-text {
+  color: rgb(224, 224, 224);
 }
