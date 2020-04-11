@@ -2,18 +2,12 @@ import React from "react"
 import propTypes from "prop-types"
 
 export default class Loading extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      loadingState: "",
-      interval: null,
-    }
-
-    this.updateLoadingState = this.updateLoadingState.bind(this)
+  state = {
+    loadingState: "",
+    interval: null,
   }
 
-  updateLoadingState() {
+  updateLoadingState = () => {
     this.setState(({ loadingState }) => {
       const newLoadingState = loadingState === "..." ? "" : loadingState + "."
       return {

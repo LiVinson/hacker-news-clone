@@ -11,18 +11,15 @@ const User = React.lazy(() => import("./components/User"))
 const Comment = React.lazy(() => import("./components/Comment"))
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      theme: "light",
-      changeTheme: () => {
-        this.setState((curState) => {
-          return {
-            theme: curState.theme === "light" ? "dark" : "light",
-          }
-        })
-      },
-    }
+  state = {
+    theme: "light",
+    changeTheme: () => {
+      this.setState((curState) => {
+        return {
+          theme: curState.theme === "light" ? "dark" : "light",
+        }
+      })
+    },
   }
 
   render() {

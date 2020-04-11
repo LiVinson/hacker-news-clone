@@ -8,15 +8,11 @@ import { NavLink } from "react-router-dom"
 import { ThemeConsumer } from "../context/theme"
 
 export default class Comment extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      story: null,
-      comments: null,
-      loading: true,
-      error: "",
-    }
+  state = {
+    story: null,
+    comments: null,
+    loading: true,
+    error: "",
   }
 
   componentDidMount() {

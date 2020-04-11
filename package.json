@@ -20,7 +20,8 @@
           "regenerator": true
         }
       ],
-      "syntax-dynamic-import"
+      "syntax-dynamic-import",
+      "transform-class-properties"
     ]
   },
   "keywords": [],
@@ -32,6 +33,7 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
     "html-webpack-plugin": "^4.0.1",

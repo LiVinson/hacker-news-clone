@@ -1,24 +1,18 @@
 import React from "react"
 import PropTypes from "prop-types"
 import queryString from "query-string"
-
 import Loading from "./Loading"
 import Card from "./Card"
 import { getUserPosts } from "../utils/API"
 import { formatDateTime, createMarkup } from "../utils/helper"
-import { NavLink } from "react-router-dom"
 import { ThemeConsumer } from "../context/theme"
 
 export default class User extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      userData: {},
-      userStories: [],
-      loading: true,
-      error: "",
-    }
+  state = {
+    userData: {},
+    userStories: [],
+    loading: true,
+    error: "",
   }
 
   //Input: N/A
