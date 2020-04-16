@@ -48,7 +48,16 @@ class App extends React.Component {
                   />
                   <Route path="/user" component={User} />
                   <Route path="/post" component={Comment} />
-                  <Route component={NotFound} />
+                  <Route
+                    render={(props) => (
+                      <NotFound
+                        text="We're not sure how you got here! Maybe try going back to the
+                            homepage?"
+                      />
+                    )}
+                    url="./images/404_dog.jpg"
+                    alt="Sad dog"
+                  />
                 </Switch>
               </React.Suspense>
             </Container>
