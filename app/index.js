@@ -9,6 +9,7 @@ import { ThemeProvider } from "./context/theme"
 const News = React.lazy(() => import("./components/News"))
 const User = React.lazy(() => import("./components/User"))
 const Comment = React.lazy(() => import("./components/Comment"))
+const NotFound = React.lazy(() => import("./components/NotFound"))
 
 class App extends React.Component {
   state = {
@@ -47,7 +48,7 @@ class App extends React.Component {
                   />
                   <Route path="/user" component={User} />
                   <Route path="/post" component={Comment} />
-                  <Route render={() => <h1>404</h1>} />
+                  <Route component={NotFound} />
                 </Switch>
               </React.Suspense>
             </Container>

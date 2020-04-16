@@ -100,6 +100,20 @@ Top and new article title
   padding: 10px 0;
 }
 
+/*
+  404  
+*/
+
+#notFoundImage {
+  max-width: 50%;
+  margin-right: 15px;
+}
+
+#notFoundText {
+}
+
+#notFoundBtn {
+}
 /*Dark Theme and  Colors*/
 .dark {
   background-color: rgb(28, 27, 27);
