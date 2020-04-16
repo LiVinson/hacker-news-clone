@@ -59,12 +59,10 @@ class App extends React.Component {
 }
 
 //Next Steps:
-
-//Update to class fields
+//Improve readme
 //Improve 404 page
 //Improve error messaging
 //add testing
 //switch to more semantic html
-//Improve readme
 
 ReactDom.render(<App />, document.getElementById("root"))
