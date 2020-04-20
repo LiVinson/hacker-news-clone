@@ -53,10 +53,11 @@ class App extends React.Component {
                       <NotFound
                         text="We're not sure how you got here! Maybe try going back to the
                             homepage?"
+                        url="./images/404_dog.jpg"
+                        alt="Sad dog"
+                        theme={this.state.theme}
                       />
                     )}
-                    url="./images/404_dog.jpg"
-                    alt="Sad dog"
                   />
                 </Switch>
               </React.Suspense>

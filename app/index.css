@@ -104,16 +104,33 @@ Top and new article title
   404  
 */
 
+.not-found-container {
+  margin-top: 15px;
+}
+
 #notFoundImage {
-  max-width: 50%;
+  max-width: 40%;
   margin-right: 15px;
 }
 
 #notFoundText {
+  font-size: 24px;
+  padding: 20px;
 }
 
-#notFoundBtn {
+.notFoundBtn {
+  padding: 15px 20px;
+  border: none;
+  margin: 0 auto;
+  font-size: 16px;
+  color: inherit;
 }
+
+.notFoundBtn:hover {
+  border: 2px solid rgb(204, 20, 20);
+  cursor: pointer;
+}
+
 /*Dark Theme and  Colors*/
 .dark {
   background-color: rgb(28, 27, 27);
