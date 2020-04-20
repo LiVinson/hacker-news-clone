@@ -6,16 +6,10 @@ import Loading from "./Loading"
 import { ThemeConsumer } from "../context/theme"
 
 export default class News extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      stories: [],
-      error: "",
-      loading: true,
-    }
-
-    this.requestStories = this.requestStories.bind(this)
+  state = {
+    stories: [],
+    error: "",
+    loading: true,
   }
 
   componentDidMount() {
@@ -41,7 +35,7 @@ export default class News extends React.Component {
 
   //Input: None
   //Output: Set state with stories array received from request, or error message
-  requestStories() {
+  requestStories = () => {
     getStories(this.props.storyType)
       .then((response) => {
         this.setState({
@@ -57,6 +51,7 @@ export default class News extends React.Component {
         })
       })
   }
+
   render() {
     const { stories, loading, error } = this.state
     return (

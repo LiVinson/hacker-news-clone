@@ -13,11 +13,13 @@ module.exports = {
     rules: [
       { test: /\.js$/, use: "babel-loader" },
       { test: /\.css/, use: ["style-loader", "css-loader"] },
+      { test: /\.(png|svg|jpg|gif)$/, use: ["file-loader"] },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./app/index.html",
+      favicon: "./app/images/favicon.ico",
     }),
     new CopyPlugin([{ from: "_redirects" }]),
   ],

@@ -9,20 +9,18 @@ import { ThemeProvider } from "./context/theme"
 const News = React.lazy(() => import("./components/News"))
 const User = React.lazy(() => import("./components/User"))
 const Comment = React.lazy(() => import("./components/Comment"))
+const NotFound = React.lazy(() => import("./components/NotFound"))
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      theme: "light",
-      changeTheme: () => {
-        this.setState((curState) => {
-          return {
-            theme: curState.theme === "light" ? "dark" : "light",
-          }
-        })
-      },
-    }
+  state = {
+    theme: "light",
+    changeTheme: () => {
+      this.setState((curState) => {
+        return {
+          theme: curState.theme === "light" ? "dark" : "light",
+        }
+      })
+    },
   }
 
   render() {
@@ -50,7 +48,17 @@ class App extends React.Component {
                   />
                   <Route path="/user" component={User} />
                   <Route path="/post" component={Comment} />
-                  <Route render={() => <h1>404</h1>} />
+                  <Route
+                    render={(props) => (
+                      <NotFound
+                        text="We're not sure how you got here! Maybe try going back to the
+                            homepage?"
+                        url="./images/404_dog.jpg"
+                        alt="Sad dog"
+                        theme={this.state.theme}
+                      />
+                    )}
+                  />
                 </Switch>
               </React.Suspense>
             </Container>
@@ -62,12 +70,10 @@ class App extends React.Component {
 }
 
 //Next Steps:
-
-//Update to class fields
+//Improve readme
 //Improve 404 page
 //Improve error messaging
 //add testing
 //switch to more semantic html
-//Improve readme
 
 ReactDom.render(<App />, document.getElementById("root"))
